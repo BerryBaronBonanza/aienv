@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+WHISPER_MODEL="$1"
+
+sr () {
+    whisper-cpp-stream -m $WHISPER_MODEL --step 1000 --length 3000
+}
+
+while true; do
+    truncate -s0 query
+
+    sr | while read s; do
+        echo "$s" | grep BLANK_AUDIO && break
+        echo "$s" >> query
+    done
+
+    echo === QUERY:
+    cat query
+    echo ===
+
+    # { echo "in very short sentence,"; cat query; } | \
+        # ollama run llama2 --nowordwrap | tee response | tee /dev/stderr | \
+        # ollama run llama2 --nowordwrap | \
+    cat query | \
+        ssh cor ./ollama run llama2 --nowordwrap | \
+        piper --model ./models/piper-voices/en/en_US/amy/medium/en_US-amy-medium.onnx --output-raw -s 1 --length_scale 1.3 | \
+        aplay -r 22050 -f S16_LE -t raw - || break
+
+    sleep 0.2 || break
+done

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+set -xe
+
+nvidia-smi
+
+python -c '
+import sys, torch
+assert torch.cuda.is_available()
+'
+
