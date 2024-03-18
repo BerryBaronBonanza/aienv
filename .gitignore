@@ -1,4 +1,5 @@
 .pixi
 .venv
+target
 models
 data

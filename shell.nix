@@ -27,7 +27,10 @@ pkgs.mkShell rec {
     # gcc10Stdenv.glibc
 
     git
+    lazygit
+
     #vim
+    lunarvim
     helix
     lapce
     alacritty
@@ -48,6 +51,7 @@ pkgs.mkShell rec {
     openai-whisper-cpp
     piper-tts
 
+    ffmpeg
     alsa-utils
 
     makefile2graph

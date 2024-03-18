@@ -52,10 +52,10 @@ models/piper-voices:
 	(cd $@ && git lfs install && git lfs pull)
 
 piper-1-en: models/piper-voices
-	{ echo '{"text":"hello people of planet earth! we come in peace!"}'; } | piper --model ./models/piper-voices/en/en_US/amy/medium/en_US-amy-medium.onnx --json-input --output-raw -s 1 --length_scale 1.3 | aplay -r 22050 -f S16_LE -t raw -
+	{ echo '{"text":"hello people of planet earth! we come in peace!"}'; } | piper --model $</en/en_US/amy/medium/en_US-amy-medium.onnx --json-input --output-raw -s 1 --length_scale 1.3 | aplay -r 22050 -f S16_LE -t raw -
 
 piper-2-sr: models/piper-voices
-	{ echo '{"text":"zdravo ljudi sa planete zemlje! mi dolazimo u miru!"}'; } | piper --model ./models/piper-voices/sr/sr_RS/serbski_institut/medium/sr_RS-serbski_institut-medium.onnx --json-input --output-raw -s 1 --length_scale 1.0 | aplay -r 22050 -f S16_LE -t raw -
+	{ echo '{"text":"zdravo ljudi sa planete zemlje! mi dolazimo u miru!"}'; } | piper --model $</sr/sr_RS/serbski_institut/medium/sr_RS-serbski_institut-medium.onnx --json-input --output-raw -s 1 --length_scale 1.0 | aplay -r 22050 -f S16_LE -t raw -
 
 # whisper
 
@@ -69,19 +69,19 @@ whisper-1-talk-with-llm: models/whisper/ggml-$(WHISPER_MODEL).bin #ollama-1-serv
 
 # fluxml
 
-fluxml/model-zoo:
+models/fluxml/model-zoo:
 	git clone https://github.com/FluxML/model-zoo $@
 
-fluxml-1-mnist: fluxml/model-zoo
-	(cd fluxml/model-zoo/vision/conv_mnist && julia -t4 --project -e 'import Pkg; Pkg.instantiate()' && julia --project conv_mnist.jl)
+fluxml-1-mnist: models/fluxml/model-zoo
+	(cd $</vision/conv_mnist && julia -t4 --project -e 'import Pkg; Pkg.instantiate()' && julia --project conv_mnist.jl)
 
 # pytorch
 
-pytorch/examples:
+models/pytorch/examples:
 	git clone https://github.com/pytorch/examples $@
 
-pytorch-1-mnist: pytorch/examples
-	(cd pytorch/examples/mnist && python main.py)
+pytorch-1-mnist: models/pytorch/examples
+	(cd $</mnist && python main.py)
 
 # python-transformers
 
@@ -90,20 +90,35 @@ python-transformers-1-bert:
 
 # candle
 
-candle:
+models/candle:
 	git clone https://github.com/huggingface/candle $@
 
-candle-1-mnist: candle
-	(cd candle && cargo run --example mnist-training --features candle-datasets,cuda)
+candle-1-mnist: models/candle
+	(cd $< && cargo run --example mnist-training --features candle-datasets,cuda)
 
-candle-2-stable-diffusion: candle
-	(cd candle && cargo run --example stable-diffusion --release --features=cuda,cudnn -- --prompt "a cosmonaut on a horse (hd, realistic, high-def)" --sd-version v1-5 --width=512 --height=512)
+candle-2-stable-diffusion: models/candle
+	(cd $< && cargo run --example stable-diffusion --release --features=cuda,cudnn -- --prompt "a cosmonaut on a horse (hd, realistic, high-def)" --sd-version v1-5 --width=512 --height=512)
 
 # spacy
 
-spacy-1-usage:
+spacy-1-docs-get-started:
 	xdg-open https://spacy.io/usage/spacy-101
 
-spacy-1-tokenization:
+spacy-2-tokenization:
 	python examples/spacy-tokenization.py
+
+# whisper-serbian
+
+whisper-serbian-1-intro:
+	xdg-open https://milutinbojic.org.rs/vesti/digitalna-novo/asr-whisper-serbian
+
+data/serbian-speech.wav:
+	mkdir -p data
+	ffmpeg -y -i https://upload.wikimedia.org/wikipedia/commons/a/a8/Bioinformatika.ogg -ac 1 -ar 16000 $@
+
+whisper-serbian-2-transcribe: data/serbian-speech.wav
+	python examples/$@.py $<
+
+whisper-serbian-3-transcribe-faster: data/serbian-speech.wav
+	python examples/$@.py $<
 
