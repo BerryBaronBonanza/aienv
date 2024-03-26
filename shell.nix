@@ -64,6 +64,8 @@ pkgs.mkShell rec {
     htop
     nvtop
 
+    sunshine
+    moonlight-qt
   ] 
   ++ gcc11Stdenv.defaultBuildInputs
   ++ gcc11Stdenv.defaultNativeBuildInputs
