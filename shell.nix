@@ -21,6 +21,7 @@ pkgs.mkShell rec {
     xorg.libXcursor
     xorg.libXrandr
     xorg.libXi
+    libxkbcommon
 
     libGL
 
@@ -37,6 +38,7 @@ pkgs.mkShell rec {
 
     julia
     python311
+    swiProlog
 
     # pkgs-unstable.pixi
 
@@ -84,6 +86,9 @@ pkgs.mkShell rec {
       export LD_LIBRARY_PATH="${pkgs.libgcc.lib}/lib:${pkgs.zlib}/lib:/run/opengl-driver/lib:$LD_LIBRARY_PATH";
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$PWD/.venv/bin:$PATH"
+      export LIBCLANG_PATH="${pkgs.libclang.lib}/lib"
+      d="$(echo ${pkgs.libclang.lib}/lib/clang/*/include)"
+      export BINDGEN_EXTRA_CLANG_ARGS="-I$d -I${pkgs.glibc.dev}/include"
   '' + (if cuda then ''
       export CUDA_ROOT="${pkgs.cudaPackages.cudatoolkit}"
       export CUDNN_LIB="${pkgs.cudaPackages.cudnn}"
