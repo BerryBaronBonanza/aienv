@@ -1,5 +1,5 @@
 {
-  description = "AI environment with tools";
+  description = "environment with AI tools";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-23.11";

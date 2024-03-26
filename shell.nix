@@ -30,7 +30,7 @@ pkgs.mkShell rec {
     git
     lazygit
 
-    #vim
+    #vim-full
     lunarvim
     helix
     lapce
@@ -68,6 +68,8 @@ pkgs.mkShell rec {
 
     sunshine
     moonlight-qt
+
+    dos2unix
   ] 
   ++ gcc11Stdenv.defaultBuildInputs
   ++ gcc11Stdenv.defaultNativeBuildInputs
