@@ -70,6 +70,8 @@ pkgs.mkShell rec {
     moonlight-qt
 
     dos2unix
+
+    groff
   ] 
   ++ gcc11Stdenv.defaultBuildInputs
   ++ gcc11Stdenv.defaultNativeBuildInputs
