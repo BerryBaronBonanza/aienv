@@ -122,3 +122,8 @@ whisper-serbian-2-transcribe: data/serbian-speech.wav
 whisper-serbian-3-transcribe-faster: data/serbian-speech.wav
 	python examples/$@.py $<
 
+# image embeddings
+
+image-embeddings-1:
+	python examples/$@.py
+
