@@ -47,9 +47,15 @@ pkgs.mkShell rec {
     gnumake
 
     llama-cpp-ovr
-    (ollama.override { 
+    (pkgs-unstable.ollama.override { 
       acceleration = if cuda then "cuda" else null;
     })
+    # (pkgs-unstable.ollama.override { 
+    #   acceleration = if cuda then "cuda" else null;
+    # }).overrideAttrs (finalAttrs: previousAttrs: {
+    #   version = "";
+    # })
+
     openai-whisper-cpp
     piper-tts
 

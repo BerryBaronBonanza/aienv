@@ -13,7 +13,10 @@ pip install \
     transformers \
     accelerate \
     bitsandbytes \
-    optimum
+    optimum \
+    diffusers \
+    xformers \
+    invisible_watermark
 
 pip install spacy
 
