@@ -1,7 +1,7 @@
 { pkgs, pkgs-unstable, cuda ? true }:
 
 let
-  llama-cpp-ovr = pkgs.llama-cpp.override { 
+  llama-cpp-ovr = pkgs-unstable.llama-cpp.override { 
     cudaSupport = cuda; 
     # openblasSupport = false; 
   };
